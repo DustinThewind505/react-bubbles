@@ -52,6 +52,7 @@ const ColorList = ({ colors, updateColors }) => {
 
   return (
     <div className="colors-wrap">
+      
       <p>colors</p>
 
       <ul>
@@ -104,7 +105,7 @@ const ColorList = ({ colors, updateColors }) => {
           </div>
         </form>
       )}
-      <Svg>
+      <Svg className='svg'>
         <Chord
           data={[
             [11975, 5871, 8916, 2868],
@@ -127,8 +128,10 @@ const ColorList = ({ colors, updateColors }) => {
             radius={400 * 0.4}
             transform={{ translate: [200, 200] }}
           />
-        ))}</Chord>
+        ))}
+        </Chord>
       </Svg>
+      
 
       <div className="spacer" />
       {/* stretch - build another form here to add a color */}
