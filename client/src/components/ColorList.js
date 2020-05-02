@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import axios from "axios";
+import {axiosWithAuth} from '../utils/axiosWithAuth';
+
+import { Text } from '@potion/element';
+
+
+
 
 const initialColor = {
   color: "",
@@ -7,7 +12,6 @@ const initialColor = {
 };
 
 const ColorList = ({ colors, updateColors }) => {
-  console.log(colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
 
@@ -18,18 +22,39 @@ const ColorList = ({ colors, updateColors }) => {
 
   const saveEdit = e => {
     e.preventDefault();
-    // Make a put request to save your updated color
-    // think about where will you get the id from...
-    // where is is saved right now?
+    axiosWithAuth().put(`/api/colors/${colorToEdit.id}`, colorToEdit)
+    .then(res => {
+      console.log(res);
+      const newColors = colors.map( each => {
+        if(each.id === res.data.id){
+          return {
+            ...res.data
+          }
+        } else {
+          return each
+        }
+      });
+      updateColors(newColors);
+    })
+    .catch(err => console.log(err));
   };
 
   const deleteColor = color => {
-    // make a delete request to delete this color
+    axiosWithAuth().delete(`/api/colors/${color.id}`)
+    .then(res => {
+      console.log(res);
+      const updatedColors = colors.filter(each => each.id !== color.id);
+      updateColors(updatedColors);
+    })
+    .catch(err => console.log(err));
   };
 
   return (
     <div className="colors-wrap">
       <p>colors</p>
+      
+      <Text dx={500} stroke='yellow'>Ello Poppet</Text>
+
       <ul>
         {colors.map(color => (
           <li key={color.color} onClick={() => editColor(color)}>
